@@ -7,6 +7,14 @@ const messages = [
 ];
 
 function App() {
+  return (
+    <div>
+      <Step />
+    </div>
+  );
+}
+
+function Step() {
   const [step, setStep] = useState(1);
   const [isOpen, setIsOpen] = useState(true);
   // const [test, setTest] = useState({ name: "Jonas"});
@@ -23,7 +31,7 @@ function App() {
   }
 
   return (
-    <>
+    <div>
       <button className="close" onClick={() => setIsOpen((is) => !is)}>
         &times;
       </button>
@@ -41,23 +49,35 @@ function App() {
           </p>
 
           <div className="buttons">
-            <button
-              style={{ backgroundColor: '#7950f2', color: '#fff' }}
-              onClick={handlePrevious}
-            >
+            <Button textColor="#fff" bgColor="#7950f2" onClick={handlePrevious}>
               Previous
-            </button>
-            <button
-              style={{ backgroundColor: '#7950f2', color: '#fff' }}
-              onClick={handleNext}
-            >
+            </Button>
+            <Button textColor="#fff" bgColor="#7950f2" onClick={handleNext}>
               Next
-            </button>
+            </Button>
           </div>
         </div>
       )}
-    </>
+    </div>
+  );
+}
+
+function Button({ textColor, bgColor, onClick, children }: ButtonProps) {
+  return (
+    <button
+      style={{ color: textColor, backgroundColor: bgColor }}
+      onClick={onClick}
+    >
+      {children}
+    </button>
   );
 }
 
 export default App;
+
+interface ButtonProps {
+  textColor: string;
+  bgColor: string;
+  onClick: () => void;
+  children: React.ReactNode;
+}
