@@ -90,10 +90,26 @@ function PackingList({
   onDeleteItem,
   onToggleItem,
 }: ItemsWithActionsProps) {
+  const [sortBy, setSortBy] = useState('input');
+
+  let sortedItems: Item[] = [];
+
+  if (sortBy === SortBy.Input) sortedItems = items;
+
+  if (sortBy === SortBy.Description)
+    sortedItems = items
+      .slice()
+      .sort((a, b) => a.description.localeCompare(b.description));
+
+  if (sortBy === SortBy.Packed)
+    sortedItems = items
+      .slice()
+      .sort((a, b) => Number(a.packed) - Number(b.packed));
+
   return (
     <div className="list">
       <ul>
-        {items.map((item) => (
+        {sortedItems.map((item) => (
           <Item
             item={item}
             key={item.id}
@@ -102,6 +118,14 @@ function PackingList({
           />
         ))}
       </ul>
+
+      <div className="actions">
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          <option value={SortBy.Input}>Sort by input order</option>
+          <option value={SortBy.Description}>Sort by description</option>
+          <option value={SortBy.Packed}>Sort by status</option>
+        </select>
+      </div>
     </div>
   );
 }
@@ -123,12 +147,13 @@ function Item({ item, onDeleteItem, onToggleItem }: ItemProps) {
 }
 
 function Stats({ items }: ItemsProps) {
-  if (!items.length) return (
-    <p className='stats'>
-      <em>Start adding some items to your packing list</em>
-    </p>
-  )
-  
+  if (!items.length)
+    return (
+      <p className="stats">
+        <em>Start adding some items to your packing list</em>
+      </p>
+    );
+
   const numItems = items.length;
   const numPacked = items.filter((item) => item.packed).length;
   const percentage = Math.round((numPacked / numItems) * 100) || 0;
@@ -167,4 +192,10 @@ interface Item {
   description: string;
   quantity: number;
   packed: boolean;
+}
+
+enum SortBy {
+  Input = 'input',
+  Description = 'description',
+  Packed = 'packed',
 }
