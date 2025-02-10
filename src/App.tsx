@@ -43,10 +43,7 @@ function Step() {
             <div className={step >= 3 ? 'active' : ''}>3</div>
           </div>
 
-          <p className="message">
-            Step {step}: {messages[step - 1]}
-            {/* {test.name} */}
-          </p>
+          <StepMessage step={step}>{messages[step - 1]}</StepMessage>
 
           <div className="buttons">
             <Button textColor="#fff" bgColor="#7950f2" onClick={handlePrevious}>
@@ -62,6 +59,14 @@ function Step() {
   );
 }
 
+function StepMessage({ step, children }: StepMessageProps) {
+  return (
+    <p className="message">
+      Step {step}:{children}
+    </p>
+  );
+}
+
 function Button({ textColor, bgColor, onClick, children }: ButtonProps) {
   return (
     <button
@@ -74,6 +79,11 @@ function Button({ textColor, bgColor, onClick, children }: ButtonProps) {
 }
 
 export default App;
+
+interface StepMessageProps {
+  step: number;
+  children: React.ReactNode;
+}
 
 interface ButtonProps {
   textColor: string;
