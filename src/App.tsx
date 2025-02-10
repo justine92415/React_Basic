@@ -25,6 +25,14 @@ function App() {
     );
   }
 
+  function handleClearList(): void {
+    const confirmed = window.confirm(
+      'Are you sure you want to clear the list?'
+    );
+
+    if (confirmed) setItems([]);
+  }
+
   return (
     <div className="app">
       <Logo />
@@ -33,6 +41,7 @@ function App() {
         items={items}
         onDeleteItem={handleDeleteItem}
         onToggleItem={handleToggleItem}
+        onClearList={handleClearList}
       />
       <Stats items={items} />
     </div>
@@ -89,6 +98,7 @@ function PackingList({
   items,
   onDeleteItem,
   onToggleItem,
+  onClearList,
 }: ItemsWithActionsProps) {
   const [sortBy, setSortBy] = useState('input');
 
@@ -125,6 +135,7 @@ function PackingList({
           <option value={SortBy.Description}>Sort by description</option>
           <option value={SortBy.Packed}>Sort by status</option>
         </select>
+        <button onClick={onClearList}>Clear list</button>
       </div>
     </div>
   );
@@ -185,6 +196,7 @@ interface ItemsProps {
 interface ItemsWithActionsProps extends ItemsProps {
   onDeleteItem: (id: number) => void;
   onToggleItem: (id: number) => void;
+  onClearList: () => void;
 }
 
 interface Item {
