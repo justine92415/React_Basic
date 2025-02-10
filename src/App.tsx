@@ -54,20 +54,21 @@ const average = (arr: any) =>
   );
 
 export default function App() {
+  const [movies, setMovies] = useState(tempMovieData);
   return (
     <>
-      <NavBar />
-      <Main />
+      <NavBar movies={movies} />
+      <Main movies={movies} />
     </>
   );
 }
 
-function NavBar() {
+function NavBar({ movies }: any) {
   return (
     <nav className="nav-bar">
       <Logo />
       <Search />
-      <NumResults />
+      <NumResults movies={movies} />
     </nav>
   );
 }
@@ -95,24 +96,24 @@ function Search() {
   );
 }
 
-function NumResults() {
+function NumResults({ movies }: any) {
   return (
     <p className="num-results">
-      Found <strong>X</strong> results
+      Found <strong>{movies.length}</strong> results
     </p>
   );
 }
 
-function Main() {
+function Main({ movies }: any) {
   return (
     <main className="main">
-      <ListBox />
+      <ListBox movies={movies} />
       <WatchedBox />
     </main>
   );
 }
 
-function ListBox() {
+function ListBox({ movies }: any) {
   const [isOpen1, setIsOpen1] = useState(true);
 
   return (
@@ -123,17 +124,15 @@ function ListBox() {
       >
         {isOpen1 ? '–' : '+'}
       </button>
-      {isOpen1 && <MovieList />}
+      {isOpen1 && <MovieList movies={movies} />}
     </div>
   );
 }
 
-function MovieList() {
-  const [movies, setMovies] = useState(tempMovieData);
-
+function MovieList({ movies }: any) {
   return (
     <ul className="list">
-      {movies?.map((movie) => (
+      {movies?.map((movie: any) => (
         <Movie movie={movie} key={movie.imdbID} />
       ))}
     </ul>
