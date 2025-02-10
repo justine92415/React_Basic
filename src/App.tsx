@@ -34,7 +34,7 @@ function App() {
         onDeleteItem={handleDeleteItem}
         onToggleItem={handleToggleItem}
       />
-      <Stats />
+      <Stats items={items} />
     </div>
   );
 }
@@ -85,7 +85,11 @@ function Form({ onAddItems }: { onAddItems: (item: Item) => void }) {
   );
 }
 
-function PackingList({ items, onDeleteItem, onToggleItem }: ItemsProps) {
+function PackingList({
+  items,
+  onDeleteItem,
+  onToggleItem,
+}: ItemsWithActionsProps) {
   return (
     <div className="list">
       <ul>
@@ -118,10 +122,25 @@ function Item({ item, onDeleteItem, onToggleItem }: ItemProps) {
   );
 }
 
-function Stats() {
+function Stats({ items }: ItemsProps) {
+  if (!items.length) return (
+    <p className='stats'>
+      <em>Start adding some items to your packing list</em>
+    </p>
+  )
+  
+  const numItems = items.length;
+  const numPacked = items.filter((item) => item.packed).length;
+  const percentage = Math.round((numPacked / numItems) * 100) || 0;
+
   return (
     <footer className="stats">
-      <em>Your have X items on your list, and your already packed X (X%)</em>
+      <em>
+        {percentage === 100
+          ? 'You got everything! Ready to go'
+          : `You have ${numItems} items on your list, and you already packed
+      ${numPacked} (${percentage}%)`}
+      </em>
     </footer>
   );
 }
@@ -136,6 +155,9 @@ interface ItemProps {
 
 interface ItemsProps {
   items: Item[];
+}
+
+interface ItemsWithActionsProps extends ItemsProps {
   onDeleteItem: (id: number) => void;
   onToggleItem: (id: number) => void;
 }
