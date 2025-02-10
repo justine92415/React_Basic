@@ -17,11 +17,23 @@ function App() {
     setItems((items) => items.filter((item) => item.id !== id));
   }
 
+  function handleToggleItem(id: number): void {
+    setItems((items) =>
+      items.map((item) =>
+        item.id === id ? { ...item, packed: !item.packed } : item
+      )
+    );
+  }
+
   return (
     <div className="app">
       <Logo />
       <Form onAddItems={handleAddItems} />
-      <PackingList items={items} onDeleteItem={handleDeleteItem} />
+      <PackingList
+        items={items}
+        onDeleteItem={handleDeleteItem}
+        onToggleItem={handleToggleItem}
+      />
       <Stats />
     </div>
   );
@@ -73,21 +85,31 @@ function Form({ onAddItems }: { onAddItems: (item: Item) => void }) {
   );
 }
 
-function PackingList({ items, onDeleteItem }: ItemsProps) {
+function PackingList({ items, onDeleteItem, onToggleItem }: ItemsProps) {
   return (
     <div className="list">
       <ul>
         {items.map((item) => (
-          <Item item={item} key={item.id} onDeleteItem={onDeleteItem} />
+          <Item
+            item={item}
+            key={item.id}
+            onDeleteItem={onDeleteItem}
+            onToggleItem={onToggleItem}
+          />
         ))}
       </ul>
     </div>
   );
 }
 
-function Item({ item, onDeleteItem }: ItemProps) {
+function Item({ item, onDeleteItem, onToggleItem }: ItemProps) {
   return (
     <li>
+      <input
+        type="checkbox"
+        checked={item.packed}
+        onChange={() => onToggleItem(item.id)}
+      />
       <span style={item.packed ? { textDecoration: 'line-through' } : {}}>
         {item.quantity} {item.description}
       </span>
@@ -109,11 +131,13 @@ export default App;
 interface ItemProps {
   item: Item;
   onDeleteItem: (id: number) => void;
+  onToggleItem: (id: number) => void;
 }
 
 interface ItemsProps {
   items: Item[];
   onDeleteItem: (id: number) => void;
+  onToggleItem: (id: number) => void;
 }
 
 interface Item {
