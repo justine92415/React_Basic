@@ -13,11 +13,15 @@ function App() {
     setItems((items) => [...items, item]);
   }
 
+  function handleDeleteItem(id: number): void {
+    setItems((items) => items.filter((item) => item.id !== id));
+  }
+
   return (
     <div className="app">
       <Logo />
       <Form onAddItems={handleAddItems} />
-      <PackingList items={items} />
+      <PackingList items={items} onDeleteItem={handleDeleteItem} />
       <Stats />
     </div>
   );
@@ -69,25 +73,25 @@ function Form({ onAddItems }: { onAddItems: (item: Item) => void }) {
   );
 }
 
-function PackingList({ items }: ItemsProps) {
+function PackingList({ items, onDeleteItem }: ItemsProps) {
   return (
     <div className="list">
       <ul>
         {items.map((item) => (
-          <Item item={item} key={item.id} />
+          <Item item={item} key={item.id} onDeleteItem={onDeleteItem} />
         ))}
       </ul>
     </div>
   );
 }
 
-function Item({ item }: ItemProps) {
+function Item({ item, onDeleteItem }: ItemProps) {
   return (
     <li>
       <span style={item.packed ? { textDecoration: 'line-through' } : {}}>
         {item.quantity} {item.description}
       </span>
-      <button>❌</button>
+      <button onClick={() => onDeleteItem(item.id)}>❌</button>
     </li>
   );
 }
@@ -104,10 +108,12 @@ export default App;
 
 interface ItemProps {
   item: Item;
+  onDeleteItem: (id: number) => void;
 }
 
 interface ItemsProps {
   items: Item[];
+  onDeleteItem: (id: number) => void;
 }
 
 interface Item {
