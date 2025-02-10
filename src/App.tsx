@@ -1,6 +1,7 @@
 const initialItems = [
   { id: 1, description: 'Passports', quantity: 2, packed: false },
   { id: 2, description: 'Socks', quantity: 12, packed: false },
+  { id: 3, description: 'Charger', quantity: 1, packed: false },
 ];
 
 function App() {
@@ -19,10 +20,24 @@ function Logo() {
 }
 
 function Form() {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
+    e.preventDefault();
+    console.log('Form submitted');
+  }
+
   return (
-    <div className="add-form">
+    <form className="add-form" onSubmit={handleSubmit}>
       <h3>What do you need for your trip?</h3>
-    </div>
+      <select>
+        {Array.from({ length: 20 }, (_, i) => i + 1).map((num) => (
+          <option key={num} value={num}>
+            {num}
+          </option>
+        ))}
+      </select>
+      <input type="text" placeholder="Item..." />
+      <button>Add</button>
+    </form>
   );
 }
 
@@ -41,7 +56,7 @@ function PackingList() {
 function Item({ item }: ItemProps) {
   return (
     <li>
-      <span style={ item.packed ? {textDecoration: 'line-through'} : {} }>
+      <span style={item.packed ? { textDecoration: 'line-through' } : {}}>
         {item.quantity} {item.description}
       </span>
       <button>❌</button>
