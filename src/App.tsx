@@ -55,24 +55,31 @@ function App() {
 
 function Header() {
   // const style = { color: "red", fontSize: "48px", textTransform: 'uppercase' as 'uppercase' };
-  const style = {}
+  const style = {};
 
-
-  return  <header className="header">
-    <h1 style={style}>Fast React Pizza Co.</h1>;
-  </header>
+  return (
+    <header className="header">
+      <h1 style={style}>Fast React Pizza Co.</h1>;
+    </header>
+  );
 }
 
 function Menu() {
+  // const pizzas = pizzaData;
+  const pizzas:Array<PizzaData> = [];
+  const numPizzas = pizzas.length;
+
   return (
     <main className="menu">
       <h2>Our menu</h2>
 
-      <ul className="pizzas">
-        {pizzaData.map((pizza) => (
-          <Pizza pizzaObj={pizza} key={pizza.name}></Pizza>
-        ))}
-      </ul>
+      {numPizzas > 0 && (
+        <ul className="pizzas">
+          {pizzas.map((pizza: PizzaData) => (
+            <Pizza pizzaObj={pizza} key={pizza.name}></Pizza>
+          ))}
+        </ul> 
+      )}
 
       {/* <Pizza 
         name="Pizza Spinaci"
@@ -102,16 +109,26 @@ function Footer() {
   // else alert("Sorry we're closed");
 
   return (
-    <footer className="footer">{new Date().toLocaleTimeString()}. We're currently open!</footer>
+    <footer className="footer">
+      {isOpen && (
+        <div className="order">
+          <p>
+            We're open until until {closeHour}:00. Come visit us or order
+            online.
+          </p>
+          <button className="btn">Order</button>
+        </div>
+      )}
+    </footer>
   );
 }
 
-function Pizza(props:PizzaProps) {
-  console.log(props)
-  
+function Pizza(props: PizzaProps) {
+  console.log(props);
+
   return (
     <div className="pizza">
-      <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name}/>
+      <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
       <div>
         <h3>{props.pizzaObj.name}</h3>
         <p>{props.pizzaObj.ingredients}</p>
