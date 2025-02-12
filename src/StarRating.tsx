@@ -18,6 +18,7 @@ const textStyle = {
 
 export default function StarRating({ maxRating = 5 }: StarRatingProps) {
   const [rating, setRating] = useState(0);
+  const [tmpRating, setTmpRating] = useState(0);
 
   function handleRating(rating: number) {
     setRating(rating);
@@ -30,16 +31,18 @@ export default function StarRating({ maxRating = 5 }: StarRatingProps) {
           <Star
             key={i}
             onRating={() => handleRating(i + 1)}
-            full={rating >= i + 1}
+            full={tmpRating ? tmpRating >= i + 1 : rating >= i + 1}
+            onHoverIn={() => setTmpRating(i + 1)}
+            onHoverOut={() => setTmpRating(0)}
           />
         ))}
       </div>
-      <p style={textStyle}>{rating || ''}</p>
+      <p style={textStyle}>{tmpRating || rating || ''}</p>
     </div>
   );
 }
 
-function Star({ onRating, full }: StarProps) {
+function Star({ onRating, full, onHoverIn, onHoverOut }: StarProps) {
   const starStyle = {
     width: '48px',
     height: '48px',
@@ -48,7 +51,12 @@ function Star({ onRating, full }: StarProps) {
   };
 
   return (
-    <span style={starStyle} onClick={onRating}>
+    <span
+      style={starStyle}
+      onClick={onRating}
+      onMouseEnter={onHoverIn}
+      onMouseLeave={onHoverOut}
+    >
       {full ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -83,6 +91,8 @@ interface StarRatingProps {
 
 interface StarProps {
   onRating: () => void;
+  onHoverIn: () => void;
+  onHoverOut: () => void;
   full?: boolean;
 }
 
