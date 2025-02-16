@@ -1,4 +1,14 @@
 
+export interface IWatchedMovie {
+  imdbID: string;
+  title: string;
+  year: string;
+  poster: string;
+  imdbRating: number;
+  runtime: number;
+  userRating: number;
+}
+
 export interface IMovie {
   Title: string;
   Year: string;
