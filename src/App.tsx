@@ -64,7 +64,7 @@ const average: <T>(arr: T) => number = (arr: any) =>
 const key = '9588565';
 
 export default function App() {
-  const [query, setQuery] = useState('inception');
+  const [query, setQuery] = useState('');
   const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState<IWatchedMovie[]>([]);
   const [error, setError] = useState('');
@@ -95,7 +95,6 @@ export default function App() {
   }
 
   function handleAddWatched(movie: IWatchedMovie) {
-    console.log('Adding movie to watched list', movie);
     setWatched((watched) => [...watched, movie]);
   }
 
@@ -143,6 +142,8 @@ export default function App() {
         setError('');
         return;
       }
+
+      handleCloseMovie();
       fetchMovies();
 
       return function () {
@@ -352,6 +353,23 @@ function MovieDetails({
     onAddWatched(newWatchedMovie);
     onCloseMovie();
   }
+
+  useEffect(
+    function () {
+      function callback(e: KeyboardEvent) {
+        if (e.code === 'Escape') {
+          onCloseMovie();
+        }
+      }
+
+      document.addEventListener('keydown', callback);
+
+      return function () {
+        document.removeEventListener('keydown', callback);
+      };
+    },
+    [onCloseMovie]
+  );
 
   useEffect(
     function () {
