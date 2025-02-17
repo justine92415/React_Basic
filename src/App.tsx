@@ -69,12 +69,10 @@ export default function App() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [selectedId, setSelectedId] = useState<null | string>(null);
-  const [watched, setWatched] = useState<IWatchedMovie[]>(
-    function () {
-      const storedValue = localStorage.getItem('watched');
-      return storedValue ? JSON.parse(storedValue) : [];
-    }
-  );
+  const [watched, setWatched] = useState<IWatchedMovie[]>(function () {
+    const storedValue = localStorage.getItem('watched');
+    return storedValue ? JSON.parse(storedValue) : [];
+  });
 
   // useEffect(function () {
   //   console.log('After initial render');
@@ -236,6 +234,12 @@ function Logo() {
 }
 
 function Search({ query, setQuery }: any) {
+  useEffect(function () {
+    const el = document.querySelector('.search') as HTMLInputElement;
+    console.log(el);
+    el.focus() ;
+  }, []);
+
   return (
     <input
       className="search"
