@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IMovie, IWatchedMovie } from './types';
 import StarRating from './StarRating';
 import {
@@ -234,11 +234,27 @@ function Logo() {
 }
 
 function Search({ query, setQuery }: any) {
+  const inputEl = useRef<HTMLInputElement>(null);
+
   useEffect(function () {
-    const el = document.querySelector('.search') as HTMLInputElement;
-    console.log(el);
-    el.focus() ;
-  }, []);
+    function callback(e: KeyboardEvent) {
+      if (document.activeElement === inputEl.current) return;
+
+      if (e.code === 'Enter') {
+        inputEl.current?.focus();
+        setQuery('');
+      }
+    }
+
+    document.addEventListener('keydown', callback);
+    return () => document.removeEventListener('keydown', callback);
+  }, [setQuery]);
+
+  // useEffect(function () {
+  //   const el = document.querySelector('.search') as HTMLInputElement;
+  //   console.log(el);
+  //   el.focus() ;
+  // }, []);
 
   return (
     <input
@@ -247,6 +263,7 @@ function Search({ query, setQuery }: any) {
       placeholder="Search movies..."
       value={query}
       onChange={(e) => setQuery(e.target.value)}
+      ref={inputEl}
     />
   );
 }
