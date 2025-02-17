@@ -7,6 +7,7 @@ export interface IWatchedMovie {
   imdbRating: number;
   runtime: number;
   userRating: number;
+  countRatingDecisions?: number;
 }
 
 export interface IMovie {
