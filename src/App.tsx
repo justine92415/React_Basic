@@ -9,6 +9,7 @@ import {
 } from './props';
 import useMovies from './useMovies';
 import useLocalStorageState from './useLocalStorageState';
+import useKey from './useKey';
 
 const tempMovieData = [
   {
@@ -181,22 +182,11 @@ function Logo() {
 function Search({ query, setQuery }: any) {
   const inputEl = useRef<HTMLInputElement>(null);
 
-  useEffect(
-    function () {
-      function callback(e: KeyboardEvent) {
-        if (document.activeElement === inputEl.current) return;
-
-        if (e.code === 'Enter') {
-          inputEl.current?.focus();
-          setQuery('');
-        }
-      }
-
-      document.addEventListener('keydown', callback);
-      return () => document.removeEventListener('keydown', callback);
-    },
-    [setQuery]
-  );
+  useKey('Enter', function () {
+    if (document.activeElement === inputEl.current) return;
+    inputEl.current?.focus();
+    setQuery('');
+  });
 
   // useEffect(function () {
   //   const el = document.querySelector('.search') as HTMLInputElement;
@@ -344,22 +334,7 @@ function MovieDetails({
     onCloseMovie();
   }
 
-  useEffect(
-    function () {
-      function callback(e: KeyboardEvent) {
-        if (e.code === 'Escape') {
-          onCloseMovie();
-        }
-      }
-
-      document.addEventListener('keydown', callback);
-
-      return function () {
-        document.removeEventListener('keydown', callback);
-      };
-    },
-    [onCloseMovie]
-  );
+  useKey('Escape', onCloseMovie);
 
   useEffect(
     function () {
