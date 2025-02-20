@@ -30,3 +30,7 @@ export enum ActionType {
   DataReceived = 'dataReceived',
   DataFailed = 'dataFailed',
 }
+
+export interface StartScreenProps {
+  numQuestions: number;
+}
