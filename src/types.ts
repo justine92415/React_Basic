@@ -8,6 +8,7 @@ export interface Action {
 export interface State {
   questions: Question[];
   status: Status;
+  index: number;
 }
 
 export interface Question {
@@ -35,4 +36,12 @@ export enum ActionType {
 export interface StartScreenProps {
   numQuestions: number;
   dispatch: React.Dispatch<Action>;
+}
+
+export interface QuestionProps {
+  question: Question;
+}
+
+export interface OptionsProps {
+  question: Question;
 }

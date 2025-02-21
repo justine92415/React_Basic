@@ -1,4 +1,4 @@
-import { ActionType, StartScreenProps } from './types';
+import { ActionType, StartScreenProps } from '../types';
 
 function StartScreen({ numQuestions, dispatch }: StartScreenProps) {
   return (
