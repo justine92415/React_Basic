@@ -34,6 +34,7 @@ export enum ActionType {
   DataFailed = 'dataFailed',
   Start = 'start',
   NewAnswer = 'newAnswer',
+  NextQuestion = 'nextQuestion',
 }
 
 export interface StartScreenProps {
@@ -49,6 +50,11 @@ export interface QuestionProps {
 
 export interface OptionsProps {
   question: Question;
+  dispatch: React.Dispatch<Action>;
+  answer: number | null;
+}
+
+export interface NextButtonProps {
   dispatch: React.Dispatch<Action>;
   answer: number | null;
 }

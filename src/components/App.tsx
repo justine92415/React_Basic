@@ -6,6 +6,7 @@ import Question from './Question';
 import Header from './Header';
 import MainComponent from './MainComponent';
 import Loader from './Loader';
+import NextButton from '../NextButton';
 
 const initialState: State = {
   questions: [],
@@ -40,6 +41,12 @@ const reducer: ReducerFn = (state, action) => {
             ? state.points + question.points
             : state.points,
       };
+    case ActionType.NextQuestion:
+      return {
+        ...state,
+        index: state.index + 1,
+        answer: null,
+      };
     default:
       throw new Error('Unknow Error');
   }
@@ -52,6 +59,8 @@ function App() {
   );
 
   const numQuestions = questions.length;
+
+  const hasAnswered = answer !== null;
 
   useEffect(function () {
     fetch('http://localhost:8000/questions')
@@ -76,11 +85,14 @@ function App() {
           <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
         )}
         {status === Status.Active && (
-          <Question
-            question={questions[index]}
-            dispatch={dispatch}
-            answer={answer}
-          />
+          <>
+            <Question
+              question={questions[index]}
+              dispatch={dispatch}
+              answer={answer}
+            />
+            {hasAnswered && <NextButton dispatch={dispatch} answer={answer} />}
+          </>
         )}
       </MainComponent>
     </div>
