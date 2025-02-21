@@ -11,6 +11,7 @@ export interface State {
   index: number;
   answer: number | null;
   points: number;
+  highScore: number;
 }
 
 export interface Question {
@@ -35,6 +36,7 @@ export enum ActionType {
   Start = 'start',
   NewAnswer = 'newAnswer',
   NextQuestion = 'nextQuestion',
+  Finished = 'finished',
 }
 
 export interface StartScreenProps {
@@ -57,6 +59,8 @@ export interface OptionsProps {
 export interface NextButtonProps {
   dispatch: React.Dispatch<Action>;
   answer: number | null;
+  index: number;
+  numQuestions: number;
 }
 
 export interface ProgressProps {
@@ -65,4 +69,11 @@ export interface ProgressProps {
   points: number;
   maxPossiblePoints: number;
   answer: number | null;
+}
+
+export interface FinishScreenProps {
+  points: number;
+  maxPossiblePoints: number;
+  dispatch: React.Dispatch<Action>;
+  highScore: number;
 }
