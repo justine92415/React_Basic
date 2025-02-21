@@ -23,7 +23,7 @@ function FinishScreen({
       <p className="highscore">(Highscore: {highScore} points)</p>
 
       <button
-        className="btn btn-primary"
+        className="btn btn-ui"
         onClick={() =>
           dispatch({
             type: ActionType.Restart,

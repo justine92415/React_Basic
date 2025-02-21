@@ -12,6 +12,7 @@ export interface State {
   answer: number | null;
   points: number;
   highScore: number;
+  secondsRemaining: number | null;
 }
 
 export interface Question {
@@ -38,6 +39,7 @@ export enum ActionType {
   NextQuestion = 'nextQuestion',
   Finished = 'finished',
   Restart = 'restart',
+  Tick = 'tick',
 }
 
 export interface StartScreenProps {
@@ -77,4 +79,9 @@ export interface FinishScreenProps {
   maxPossiblePoints: number;
   dispatch: React.Dispatch<Action>;
   highScore: number;
+}
+
+export interface TimerProps {
+  dispatch: React.Dispatch<Action>;
+  secondsRemaining: number | null;
 }
