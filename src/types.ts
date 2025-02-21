@@ -37,6 +37,7 @@ export enum ActionType {
   NewAnswer = 'newAnswer',
   NextQuestion = 'nextQuestion',
   Finished = 'finished',
+  Restart = 'restart',
 }
 
 export interface StartScreenProps {

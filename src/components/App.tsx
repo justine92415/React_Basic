@@ -56,6 +56,13 @@ const reducer: ReducerFn = (state, action) => {
         status: Status.Finished,
         highScore: Math.max(state.points, state.highScore),
       };
+    case ActionType.Restart:
+      return {
+        ...initialState,
+        questions: state.questions,
+        status: Status.Ready,
+        highScore: state.highScore,
+      };
     default:
       throw new Error('Unknow Error');
   }

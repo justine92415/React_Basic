@@ -1,4 +1,4 @@
-import { FinishScreenProps } from './types';
+import { ActionType, FinishScreenProps } from './types';
 
 function FinishScreen({
   points,
@@ -21,6 +21,15 @@ function FinishScreen({
         {maxPossiblePoints} ({Math.ceil(percentage)}%)
       </p>
       <p className="highscore">(Highscore: {highScore} points)</p>
+
+      <button
+        className="btn btn-primary"
+        onClick={() =>
+          dispatch({
+            type: ActionType.Restart,
+          })
+        }
+      >Restart quiz</button>
     </>
   );
 }
