@@ -58,3 +58,11 @@ export interface NextButtonProps {
   dispatch: React.Dispatch<Action>;
   answer: number | null;
 }
+
+export interface ProgressProps {
+  numQuestions: number;
+  index: number;
+  points: number;
+  maxPossiblePoints: number;
+  answer: number | null;
+}

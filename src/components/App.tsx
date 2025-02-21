@@ -7,6 +7,7 @@ import Header from './Header';
 import MainComponent from './MainComponent';
 import Loader from './Loader';
 import NextButton from '../NextButton';
+import Progress from '../Progress';
 
 const initialState: State = {
   questions: [],
@@ -53,12 +54,17 @@ const reducer: ReducerFn = (state, action) => {
 };
 
 function App() {
-  const [{ status, questions, index, answer }, dispatch] = useReducer(
+  const [{ status, questions, index, answer, points }, dispatch] = useReducer(
     reducer,
     initialState
   );
 
   const numQuestions = questions.length;
+
+  const maxPossiblePoints = questions.reduce(
+    (acc, question) => acc + question.points,
+    0
+  );
 
   const hasAnswered = answer !== null;
 
@@ -86,6 +92,13 @@ function App() {
         )}
         {status === Status.Active && (
           <>
+            <Progress
+              numQuestions={numQuestions}
+              index={index}
+              points={points}
+              maxPossiblePoints={maxPossiblePoints}
+              answer={answer}
+            />
             <Question
               question={questions[index]}
               dispatch={dispatch}
