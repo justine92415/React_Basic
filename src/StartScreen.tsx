@@ -1,11 +1,16 @@
-import { StartScreenProps } from './types';
+import { ActionType, StartScreenProps } from './types';
 
-function StartScreen({ numQuestions }: StartScreenProps) {
+function StartScreen({ numQuestions, dispatch }: StartScreenProps) {
   return (
     <div className="start">
       <h2>Welcome to The React Quiz!</h2>
       <h3>{numQuestions} question to test your React mastery</h3>
-      <button className='btn btn-ui'>Let's start</button>
+      <button
+        className="btn btn-ui"
+        onClick={() => dispatch({ type: ActionType.Start })}
+      >
+        Let's start
+      </button>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { ReducerFn, State, Status, ActionType } from './types';
 import Loader from './Loader';
 import ErrorComponent from './Error';
 import StartScreen from './StartScreen';
+import Question from './Question';
 
 const initialState: State = {
   questions: [],
@@ -24,6 +25,8 @@ const reducer: ReducerFn = (state, action) => {
         ...state,
         status: Status.Error,
       };
+    case ActionType.Start:
+      return { ...state, status: Status.Active };
     default:
       throw new Error('Unknow Error');
   }
@@ -53,7 +56,8 @@ function App() {
       <MainComponent>
         {status === Status.Loading && <Loader />}
         {status === Status.Error && <ErrorComponent />}
-        {status === Status.Ready && <StartScreen numQuestions={numQuestions} />}
+        {status === Status.Ready && <StartScreen numQuestions={numQuestions} dispatch={dispatch} />}
+        {status === Status.Active && <Question/>}
       </MainComponent>
     </div>
   );

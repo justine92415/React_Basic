@@ -29,8 +29,10 @@ export enum Status {
 export enum ActionType {
   DataReceived = 'dataReceived',
   DataFailed = 'dataFailed',
+  Start = 'start',
 }
 
 export interface StartScreenProps {
   numQuestions: number;
+  dispatch: React.Dispatch<Action>;
 }
