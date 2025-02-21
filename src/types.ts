@@ -9,6 +9,8 @@ export interface State {
   questions: Question[];
   status: Status;
   index: number;
+  answer: number | null;
+  points: number;
 }
 
 export interface Question {
@@ -31,6 +33,7 @@ export enum ActionType {
   DataReceived = 'dataReceived',
   DataFailed = 'dataFailed',
   Start = 'start',
+  NewAnswer = 'newAnswer',
 }
 
 export interface StartScreenProps {
@@ -40,8 +43,12 @@ export interface StartScreenProps {
 
 export interface QuestionProps {
   question: Question;
+  dispatch: React.Dispatch<Action>;
+  answer: number | null;
 }
 
 export interface OptionsProps {
   question: Question;
+  dispatch: React.Dispatch<Action>;
+  answer: number | null;
 }
