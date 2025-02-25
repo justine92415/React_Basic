@@ -1,9 +1,10 @@
-import { AccountState } from '../../types';
+import { AccountState, DepositFn } from '../../types';
 
 const initStateAccount = {
   balance: 0,
   loan: 0,
   loanPurpose: '',
+  isLoading: false,
 };
 
 export default function accountReducer(
@@ -12,7 +13,7 @@ export default function accountReducer(
 ): AccountState {
   switch (action.type) {
     case 'account/deposit':
-      return { ...state, balance: state.balance + action.payload };
+      return { ...state, balance: state.balance + action.payload, isLoading: false };
     case 'account/withdraw':
       return { ...state, balance: state.balance - action.payload };
     case 'account/requestLoan':
@@ -31,13 +32,23 @@ export default function accountReducer(
         loanPurpose: '',
         balance: state.balance - state.loan,
       };
+    case 'account/convertingCurrency':
+      return { ...state, isLoading: true };
     default:
       return state;
   }
 }
 
-export function deposit(amount: number) {
-  return { type: 'account/deposit', payload: amount };
+export function deposit(amount: number, currency: string): DepositFn {
+  if (currency === 'USD') return { type: 'account/deposit', payload: amount };
+  return async function (dispatch: any, getState: any) {
+    dispatch({ type: 'account/convertingCurrency' });
+
+    const res = await convert(currency, 'USD', amount);
+    const data: TopLevel = await res.json();
+    const convertedAmount = data.rates.USD;
+    dispatch({ type: 'account/deposit', payload: amount * convertedAmount });
+  };
 }
 export function withdraw(amount: number) {
   return { type: 'account/withdraw', payload: amount };
@@ -47,4 +58,21 @@ export function requestLoan(amount: number, purpose: string) {
 }
 export function payLoan() {
   return { type: 'account/payLoan' };
+}
+
+async function convert(from: string, to: string, amount: number) {
+  return fetch(
+    `https://api.frankfurter.dev/v1/latest?base=${from}&symbols=${to}`
+  );
+}
+
+export interface TopLevel {
+  amount: number;
+  base: string;
+  date: Date;
+  rates: Rates;
+}
+
+export interface Rates {
+  USD: number;
 }
