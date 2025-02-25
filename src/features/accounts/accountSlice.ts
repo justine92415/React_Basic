@@ -1,10 +1,15 @@
+import { AccountState } from '../../types';
+
 const initStateAccount = {
   balance: 0,
   loan: 0,
   loanPurpose: '',
 };
 
-export default  function accountReducer(state = initStateAccount, action: any) {
+export default function accountReducer(
+  state: AccountState = initStateAccount,
+  action: any
+): AccountState {
   switch (action.type) {
     case 'account/deposit':
       return { ...state, balance: state.balance + action.payload };

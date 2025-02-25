@@ -1,3 +1,4 @@
+import { CustomerState } from '../../types';
 
 const initialStateCustomer = {
   fullName: '',
@@ -5,7 +6,10 @@ const initialStateCustomer = {
   createdAt: '',
 };
 
-export default function customerReducer(state = initialStateCustomer, action: any) {
+export default function customerReducer(
+  state: CustomerState = initialStateCustomer,
+  action: any
+): CustomerState {
   switch (action.type) {
     case 'customer/createCustomer':
       return {
