@@ -1,3 +1,6 @@
+
+import { createStore } from 'redux';
+
 const initState = {
   balance: 0,
   loan: 0,
@@ -25,3 +28,5 @@ function reducer(state = initState, action: any) {
       return state;
   }
 }
+
+const store = createStore(reducer);
