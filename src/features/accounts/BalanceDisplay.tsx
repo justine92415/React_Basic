@@ -1,3 +1,6 @@
+import { connect } from "react-redux";
+import { IStore } from "../../types";
+
 function formatCurrency(value: any) {
   return new Intl.NumberFormat('en', {
     style: 'currency',
@@ -5,8 +8,15 @@ function formatCurrency(value: any) {
   }).format(value);
 }
 
-function BalanceDisplay() {
-  return <div className="balance">{formatCurrency(123456)}</div>;
+function BalanceDisplay({ balance }: { balance: number }) {
+  return <div className="balance">{formatCurrency(balance)}</div>;
 }
 
-export default BalanceDisplay;
+// 舊方法，see^2 就好
+function mapStateToProps(state:IStore) {
+  return {
+    balance: state.account.balance,
+  };
+}
+
+export default connect(mapStateToProps)(BalanceDisplay);
