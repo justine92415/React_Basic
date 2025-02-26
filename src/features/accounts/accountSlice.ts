@@ -41,10 +41,31 @@ const accountSlice = createSlice({
       state.loan = 0;
       state.loanPurpose = '';
     },
+    convertingCurrency(state) {
+      state.isLoading = true;
+    },
   },
 });
 
-export const { deposit, withdraw, requestLoan, payLoan } = accountSlice.actions;
+export const { withdraw, requestLoan, payLoan } = accountSlice.actions;
+
+export function deposit(amount: number, currency: string): DepositFn {
+  if (currency === 'USD') return { type: 'account/deposit', payload: amount };
+  return async function (dispatch: any, getState: any) {
+    dispatch({ type: 'account/convertingCurrency' });
+
+    const res = await convert(currency, 'USD');
+    const data: TopLevel = await res.json();
+    const convertedAmount = data.rates.USD;
+    dispatch({ type: 'account/deposit', payload: amount * convertedAmount });
+  };
+}
+
+async function convert(from: string, to: string) {
+  return fetch(
+    `https://api.frankfurter.dev/v1/latest?base=${from}&symbols=${to}`
+  );
+}
 
 export default accountSlice.reducer;
 
@@ -80,17 +101,6 @@ export default accountSlice.reducer;
 //   }
 // }
 
-// export function deposit(amount: number, currency: string): DepositFn {
-//   if (currency === 'USD') return { type: 'account/deposit', payload: amount };
-//   return async function (dispatch: any, getState: any) {
-//     dispatch({ type: 'account/convertingCurrency' });
-
-//     const res = await convert(currency, 'USD', amount);
-//     const data: TopLevel = await res.json();
-//     const convertedAmount = data.rates.USD;
-//     dispatch({ type: 'account/deposit', payload: amount * convertedAmount });
-//   };
-// }
 // export function withdraw(amount: number) {
 //   return { type: 'account/withdraw', payload: amount };
 // }
@@ -99,12 +109,6 @@ export default accountSlice.reducer;
 // }
 // export function payLoan() {
 //   return { type: 'account/payLoan' };
-// }
-
-// async function convert(from: string, to: string, amount: number) {
-//   return fetch(
-//     `https://api.frankfurter.dev/v1/latest?base=${from}&symbols=${to}`
-//   );
 // }
 
 export interface TopLevel {
